@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <style>
+    #container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      margin-top: 50px;
+    }
+    #container > div {
+      border: 1px solid red;
+      width: 90%;
+      height: 100px;
+      padding: 10px;
+      border-radius: 10px;
+    }
+  </style>
+  <body>
+    <form id="form" onsubmit="storedata(event)">
+      <label>Choose expenseMonth:</label>
+      <input type="number" id="number" placeholder="Enter amount" />
+      <label>Choose description:</label>
+      <input type="text" id="des" placeholder="Enter something" />
+      <label>Choose category</label>
+      <select id="opdata">
+        <option value="Fuel">Fuel</option>
+        <option value="Food">Food</option>
+        <option value="Electrcity">Electrcity</option>
+        <option value="Movie">Movie</option>
+        <option value="Glosery">Glosery</option>
+      </select>
+      <input type="submit" />
+    </form>
+
+    <div id="container"></div>
+  </body>
+</html>
+
+<script>
+  function storedata(event) {
+    event.preventDefault();
+
+    let form = document.getElementById("form");
+
+    let number = form.number.value;
+
+    let name = form.des.value;
+
+    let optiondata = form.opdata.value;
+
+    let data = new Person(number, name, optiondata);
+
+    arr.push(data);
+
+    localStorage.setItem("form", JSON.stringify(arr));
+  }
+
+  function Person(a, b, c) {
+    this.number = a;
+    this.name = b;
+
+    this.optiondata = c;
+  }
+
+  var arr = JSON.parse(localStorage.getItem("form")) || [] ;
+
+  console.log(arr);
+
+  arr.forEach(function (el,index) {
+    let div = document.createElement("div");
+
+    let number = document.createElement("li");
+     
+    number.innerText = `expenceMontheMoney : ${el.number}`;
+
+    let name = document.createElement("li");
+
+    name.innerText = `description: ${el.name}`;
+
+    let option = document.createElement("li");
+
+    option.innerText = `option_Data: ${el.optiondata}`;
+
+    let btn = document.createElement("button");
+
+    btn.innerText = "Delete User";
+    btn.style.margin = "10px";
+
+    btn.addEventListener("click" ,function(){
+
+     deleteElement(el,index)
+    })
+    let btn2 = document.createElement("button");
+    btn2.innerText = "Edit User";
+
+    div.append(number, name, option, btn, btn2);
+
+    document.getElementById("container").append(div);
+
+    function  deleteElement(el,index){
+
+        arr.splice(1, index)
+
+        window.location.reload()
+
+        localStorage.setItem("form", JSON.stringify(arr))
+    }
+  });
+</script>
